@@ -49,13 +49,14 @@ a{
   transition: all 0.25s ease;
 }
 
+
 .sidebar__li:hover {
-  background-color: #e6f4ea;
+  background: #e6f4ea;
   color: #047857;
-  cursor: pointer;
+  transform: translateX(4px);
 }
 
-.sidebar__li.active {
+.sidebar__active{
   background-color: #047857;
   color: #ffffff;
 }

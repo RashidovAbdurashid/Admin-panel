@@ -5,9 +5,9 @@
 }
 
 body {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #f4f6f8, #eef1f5);
-  color: #1f2937;
+  font-family: "Inter", Cambria, Georgia, serif;
+  background-color: #f4f6f8;
+  line-height: 1.6;
 }
 
 a{
@@ -43,7 +43,21 @@ a{
   margin-top: 20px;
 }
 
-.sidebar li {
+.product__active{
+    height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #4b5563;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  background-color: #047857;
+  color: #ffffff;
+}
+
+.sidebar__li {
   height: 46px;
   display: flex;
   align-items: center;
@@ -64,7 +78,7 @@ a{
 
 
 .logout {
-  margin-top: auto;
+  margin-top: 50px;
   background: #ef4444;
   color: #ffffff;
   height: 44px;
