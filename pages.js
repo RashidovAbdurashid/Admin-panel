@@ -69,3 +69,6 @@ function deleteProduct(id) {
 document.querySelector("#close").onclick = () => {
   modal.classList.add("hidden");
 };
+
+
+

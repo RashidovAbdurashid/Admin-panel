@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Products</title>
+    <link rel="stylesheet" href="./page_style/product.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Admin</h2>
+        <ul>
+          <li><a href="pages.html">Dashboard</a></li>
+          <li>Users</li>
+          <li>Products</li>
+          <li>Carts</li>
+        </ul>
+        <button class="logout" onclick="logout()">Logout</button>
+      </aside>
+
+      <main class="content">
+        <div class="top">
+          <h1>Products</h1>
+          <button class="add-product">Add Product</button>
+        </div>
+
+        <div id="products" class="products-cards"></div>
+      </main>
+    </div>
+
+    <script src="product.js"></script>
+  </body>
+</html>
