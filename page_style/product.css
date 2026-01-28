@@ -181,32 +181,32 @@ a{
   gap: 10px;
 }
 
-.edit-btn,
-.delete-btn {
-  flex: 1;
-  padding: 7px 0;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+.edit {
+  width: 65px;
+  height: 30px;
   border: none;
+  background-color: #22c55e;
+  color: white;
   cursor: pointer;
-  transition: all 0.25s ease;
+  border-radius: 6px;
+  transition: 0.2s;
 }
 
-.edit-btn {
-  background: #22c55e;
+.edit:hover {
+  background-color: #15803d;
+}
+
+.delete {
+  width: 70px;
+  height: 30px;
+  border: none;
+  background-color: #ef4444;
   color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s;
 }
 
-.edit-btn:hover {
-  background: #16a34a;
-}
-
-.delete-btn {
-  background: #ef4444;
-  color: white;
-}
-
-.delete-btn:hover {
-  background: #dc2626;
+.delete:hover {
+  background-color: #b91c1c;
 }

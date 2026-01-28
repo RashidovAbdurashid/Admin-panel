@@ -18,8 +18,8 @@ function renderProducts(products) {
       <h3>${item.title.slice(0, 45)}...</h3>
       <div class="price">$${item.price}</div>
       <div class="card-actions">
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
+        <button class="edit">Edit</button>
+        <button class="delete">Delete</button>
       </div>
     `;
 
@@ -33,8 +33,5 @@ function logout() {
 }
 
 
-function product() {
-  window.location.href = "product.html";
-}
 
 
