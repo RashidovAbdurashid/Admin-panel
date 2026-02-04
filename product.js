@@ -1,4 +1,4 @@
-const API = "https://fakestoreapi.com/products";
+const API = "https://fakestoreapi.com/carts";
 const productList = document.querySelector("#productList");
 const elLogout = document.querySelector(".logout__btn");
 const titleInput = document.querySelector("#title");
@@ -11,22 +11,29 @@ const modal = document.querySelector("#modal");
 elLogout.addEventListener("click", () => {
   localStorage.removeItem("token");
   localStorage.removeItem("usename");
-  window.location.href = "/index.html";
+  window.location.href = "index.html";
 });
 
 function fetchProducts() {
   axios.get(API).then((res) => {
     productList.innerHTML = "";
 
-    res.data.slice(0, 10).forEach((p) => {
+    res.data.slice(0, 10).forEach((cart) => {
       const tr = document.createElement("tr");
 
+      const firstProduct = cart.products[0];
+
+      const fakeTitle = `User ${cart.userId} Cart`;
+      const fakePrice = firstProduct.quantity * 20;
+      const fakeCategory = "Cart Order";
+      const fakeDesc = `Products: ${cart.products.length}`;
+
       tr.innerHTML = `
-        <td>${p.id}</td>
-        <td>${p.title}</td>
-        <td>${p.price}</td>
-        <td>${p.category}</td>
-        <td>${p.description.slice(0, 20)}...</td>
+        <td>${cart.id}</td>
+        <td>${fakeTitle}</td>
+        <td>$${fakePrice}</td>
+        <td>${fakeCategory}</td>
+        <td>${fakeDesc}</td>
         <td class="actions">
           <button class="edit">Edit</button>
           <button class="delete">Delete</button>
@@ -34,11 +41,11 @@ function fetchProducts() {
       `;
 
       tr.querySelector(".edit").addEventListener("click", () => {
-        editProduct(p);
+        editProduct(cart);
       });
 
       tr.querySelector(".delete").addEventListener("click", () => {
-        deleteProduct(p.id);
+        deleteProduct(cart.id);
       });
 
       productList.appendChild(tr);
@@ -58,33 +65,39 @@ document.querySelector(".add__product__btn").onclick = () => {
 };
 
 document.querySelector("#saveProduct").onclick = () => {
-  const product = {
-    title: titleInput.value,
-    price: priceInput.value,
-    description: descriptionInput.value,
-    category: categoryInput.value,
+  const cart = {
+    userId: Number(titleInput.value),
+    date: new Date(),
+    products: [
+      {
+        productId: Number(priceInput.value),
+        quantity: Number(descriptionInput.value),
+      },
+    ],
   };
 
   if (editId) {
-    axios.put(`${API}/${editId}`, product).then(() => loadProducts());
+    axios.put(`${API}/${editId}`, cart).then(fetchProducts);
   } else {
-    axios.post(API, product).then(() => loadProducts());
+    axios.post(API, cart).then(fetchProducts);
   }
 
   modal.classList.add("hidden");
 };
 
-function editProduct(product) {
+function editProduct(cart) {
   modal.classList.remove("hidden");
-  titleInput.value = product.title;
-  priceInput.value = product.price;
-  descriptionInput.value = product.description;
-  categoryInput.value = product.category;
-  editId = product.id;
+
+  titleInput.value = cart.userId;
+  priceInput.value = cart.products[0]?.productId || "";
+  descriptionInput.value = cart.products[0]?.quantity || "";
+  categoryInput.value = "Cart Order";
+
+  editId = cart.id;
 }
 
-function deleteProduct(id) {
-  axios.delete(`${API}/${id}`).then(() => loadProducts());
+function deleteCart(id) {
+  axios.delete(`${API}/${id}`).then(() => fetchCarts());
 }
 
 document.querySelector("#close").onclick = () => {
