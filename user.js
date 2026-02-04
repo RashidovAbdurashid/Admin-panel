@@ -8,7 +8,7 @@ let editId = null;
 
 document.querySelector(".logout__btn").onclick = () => {
   localStorage.clear();
-  location.href = "/pages/index.html";
+  location.href = "index.html";
 };
 
 function fetchUsers() {
