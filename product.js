@@ -1,12 +1,15 @@
 const API = "https://fakestoreapi.com/carts";
 const productList = document.querySelector("#productList");
 const elLogout = document.querySelector(".logout__btn");
+const modal = document.querySelector("#modal");
+
+// Inputs
 const titleInput = document.querySelector("#title");
 const priceInput = document.querySelector("#price");
 const descriptionInput = document.querySelector("#description");
 const categoryInput = document.querySelector("#category");
-const usersLink = document.querySelector(".users__link");
-const modal = document.querySelector("#modal");
+
+let editId = null;
 
 elLogout.addEventListener("click", () => {
   localStorage.removeItem("token");
@@ -15,42 +18,43 @@ elLogout.addEventListener("click", () => {
 });
 
 function fetchProducts() {
-  axios.get(API).then((res) => {
-    productList.innerHTML = "";
+  axios
+    .get(API)
+    .then((res) => {
+      productList.innerHTML = "";
 
-    res.data.slice(0, 10).forEach((cart) => {
-      const tr = document.createElement("tr");
+      res.data.slice(0, 10).forEach((cart) => {
+        const tr = document.createElement("tr");
 
-      const firstProduct = cart.products[0];
+        const firstProduct = cart.products[0];
+        const fakeTitle = `User ${cart.userId} Cart`;
+        const fakePrice = firstProduct ? firstProduct.quantity * 20 : 0;
+        const fakeCategory = "Cart Order";
+        const fakeDesc = `Products: ${cart.products.length}`;
 
-      const fakeTitle = `User ${cart.userId} Cart`;
-      const fakePrice = firstProduct.quantity * 20;
-      const fakeCategory = "Cart Order";
-      const fakeDesc = `Products: ${cart.products.length}`;
+        tr.innerHTML = `
+          <td>${cart.id}</td>
+          <td>${fakeTitle}</td>
+          <td>$${fakePrice}</td>
+          <td>${fakeCategory}</td>
+          <td>${fakeDesc}</td>
+          <td class="actions">
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>
+        `;
 
-      tr.innerHTML = `
-        <td>${cart.id}</td>
-        <td>${fakeTitle}</td>
-        <td>$${fakePrice}</td>
-        <td>${fakeCategory}</td>
-        <td>${fakeDesc}</td>
-        <td class="actions">
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
-        </td>
-      `;
+        tr.querySelector(".edit").addEventListener("click", () =>
+          editProduct(cart),
+        );
+        tr.querySelector(".delete").addEventListener("click", () =>
+          deleteProduct(cart.id),
+        );
 
-      tr.querySelector(".edit").addEventListener("click", () => {
-        editProduct(cart);
+        productList.appendChild(tr);
       });
-
-      tr.querySelector(".delete").addEventListener("click", () => {
-        deleteProduct(cart.id);
-      });
-
-      productList.appendChild(tr);
-    });
-  });
+    })
+    .catch((err) => console.error(err));
 }
 
 fetchProducts();
@@ -61,7 +65,7 @@ document.querySelector(".add__product__btn").onclick = () => {
   titleInput.value = "";
   priceInput.value = "";
   descriptionInput.value = "";
-  categoryInput.value = "";
+  categoryInput.value = "Cart Order";
 };
 
 document.querySelector("#saveProduct").onclick = () => {
@@ -77,9 +81,15 @@ document.querySelector("#saveProduct").onclick = () => {
   };
 
   if (editId) {
-    axios.put(`${API}/${editId}`, cart).then(fetchProducts);
+    axios
+      .put(`${API}/${editId}`, cart)
+      .then(fetchProducts)
+      .catch((err) => console.error(err));
   } else {
-    axios.post(API, cart).then(fetchProducts);
+    axios
+      .post(API, cart)
+      .then(fetchProducts)
+      .catch((err) => console.error(err));
   }
 
   modal.classList.add("hidden");
@@ -96,8 +106,11 @@ function editProduct(cart) {
   editId = cart.id;
 }
 
-function deleteCart(id) {
-  axios.delete(`${API}/${id}`).then(() => fetchCarts());
+function deleteProduct(id) {
+  axios
+    .delete(`${API}/${id}`)
+    .then(fetchProducts)
+    .catch((err) => console.error(err));
 }
 
 document.querySelector("#close").onclick = () => {
